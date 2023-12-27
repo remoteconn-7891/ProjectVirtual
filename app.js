@@ -1,14 +1,7 @@
 const express = require('express');
-const app = express()
+const app = express();
 
 const port = 3060;
-
-function loginUser(req, res, next){
-    //retrieve info from req object
-    res.locals.loggedIn = true
-    console.log("Successful login!")
-    next();
-}
 
 app.use('/login',loginUser);
 
@@ -46,6 +39,13 @@ app.post('/login', (req, res, next) => {
         password: 'Password!123', 
     };
 });
+
+function loginUser(req, res, next){
+    //retrieve info from req object
+    res.locals.loggedIn = true
+    console.log("Successful login!")
+    next();
+}
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}..`);
