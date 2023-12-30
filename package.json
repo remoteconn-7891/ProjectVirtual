@@ -7,15 +7,17 @@
   },
   "name": "projectvirtual",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js",
+    "startdev": "env-cmd -e dev nodemon server.js",
+    "startprod": "env-cmd -e prod nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
+    "env-cmd": "^10.1.0",
     "nodemon": "^3.0.2"
-  }
+  },
+  "description": ""
 }
