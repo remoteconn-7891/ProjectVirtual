@@ -5,6 +5,7 @@ const port = 3060;
 
 //Router for user registering an account with middleware
 app.post('/register', (req, res) => {
+    
     res.status(200).send('Successfully created an account')
 
 });
