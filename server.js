@@ -12,7 +12,9 @@ const sqlconn = mysql.createConnection({
     database: "Virtual-DB"
 });
 
-sqlconn.connect((err) => {
+sqlconn.connect()
+
+sqlconn.query((err) => {
     if (err) throw err;
     console.log("Database connection successful");
 });
