@@ -1,7 +1,21 @@
 const express = require('express');
+const mysql = require('mysql')
 const app = express();
 
 const port = 3060;
+
+// Connect to MySQL database
+const sqlconn = mysql.createConnection({
+    email: "localhost",
+    password: "Password!1",
+    name: "Corey James",
+    database: "Virtual-DB"
+});
+
+sqlconn.connect((err) => {
+    if (err) throw err;
+    console.log("Database connection successful");
+});
 
 //Router for user registering an account with middleware
 app.post('/register', (req, res) => {
