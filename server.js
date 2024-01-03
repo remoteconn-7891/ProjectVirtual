@@ -1,20 +1,20 @@
 const express = require('express');
-const mysql = require('mysql')
 const app = express();
+const mysql = require('mysql')
 
 const port = 3060;
 
 // Connect to MySQL database
 const sqlconn = mysql.createConnection({
-    email: "localhost",
-    password: "Password!1",
+    host: "localhost",
+    email: "coreyjames689@aol.com",
+    password: "dsfsd78df&I*\$",
     name: "Corey James",
-    database: "Virtual-DB"
+    database: "MyDB",
+    port: 3020
 });
 
-sqlconn.connect()
-
-sqlconn.query((err) => {
+sqlconn.connect((err) => {
     if (err) throw err;
     console.log("Database connection successful");
 });
@@ -43,6 +43,7 @@ app.post('/logout', (req, res) => {
     
 });
 
+// server is listening on port 3060
 app.listen(port, () => {
     console.log(`Listening on port ${port}..`);
 })
