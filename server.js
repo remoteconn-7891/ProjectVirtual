@@ -1,30 +1,38 @@
 const express = require('express');
 const app = express();
-const mysql = require('mysql')
+const connsql = require('mysql2')
 
 const port = 3060;
 
-// Connect to MySQL database
-const sqlconn = mysql.createConnection({
-    host: "localhost",
-    email: "coreyjames689@aol.com",
-    password: "dsfsd78df&I*\$",
-    name: "Corey James",
-    database: "MyDB",
-    port: 3020
+// Connecting to MySQL database
+const connection = connsql.createConnection({
+
+    host: '127.0.0.1',
+    user: 'root',
+    password: 'VirtualDB@87',
+    database: 'virtual_db',
 });
 
-sqlconn.connect((err) => {
+connection.connect((err) => {
     if (err) throw err;
     console.log("Database connection successful");
 });
 
+app.get('/', (req, res) => {
+    connsql.query('select 10 as randomNumber', (err, result, fields) => {
+        console.log(result)
+        res.end();
+})
+
+
 //Router for user registering an account with middleware
 app.post('/register', (req, res) => {
     
-    res.status(200).send('Successfully created an account')
+    res.status(200).send('Successfully created an account') 
+        
+    }
 
-});
+);
 
 // Router (API) for login in Express.js using HTTP Req & Res (POST)
 app.post('/login', (req, res) => {
@@ -46,4 +54,4 @@ app.post('/logout', (req, res) => {
 // server is listening on port 3060
 app.listen(port, () => {
     console.log(`Listening on port ${port}..`);
-})
+})})
