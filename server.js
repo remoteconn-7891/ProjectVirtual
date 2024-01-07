@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
-const connsql = require('mysql2')
+const sqlconn = require('mysql2');
 
 const port = 3060;
 
 // Connecting to MySQL database
-const connection = connsql.createConnection({
+const connection = sqlconn.createConnection({
 
     host: '127.0.0.1',
     user: 'root',
@@ -18,21 +18,30 @@ connection.connect((err) => {
     console.log("Database connection successful");
 });
 
-app.get('/', (req, res) => {
-    connsql.query('select 10 as randomNumber', (err, result, fields) => {
-        console.log(result)
-        res.end();
-})
-
 
 //Router for user registering an account with middleware
 app.post('/register', (req, res) => {
-    
-    res.status(200).send('Successfully created an account') 
-        
+    const {email, password, passwordConfirmation} = req.body
+
+    // Minimum password length of 8 characters   
+    if(password === minimumPassword) {
+        const minimumPassword = 8,
+password = true
+    }
+    // Verify if password matches confirm password on the register form
+    if (password === passwordConfirmation) {
+
+        // Verify if email doesn't match an existing user account
+if (user.find(user => user.email === email)) {
+    }
+    res.status(200).send('Successfully created an account', {
+        message: 'User with this email already exists'
+    });
+    return ;
     }
 
-);
+    const hashedPassword = getHashedPassword(password);
+});
 
 // Router (API) for login in Express.js using HTTP Req & Res (POST)
 app.post('/login', (req, res) => {
@@ -45,6 +54,11 @@ app.post('/login', (req, res) => {
     res.status(200).send('Successful login')
 });
 
+// Route for navigating to the profile pages
+app.get('/profile', (req, res) => {
+    res.status(200).send('Create a profile')
+});
+
 // Router for logging out user
 app.post('/logout', (req, res) => {
     res.status(200).send('Successfully logged out')
@@ -54,4 +68,4 @@ app.post('/logout', (req, res) => {
 // server is listening on port 3060
 app.listen(port, () => {
     console.log(`Listening on port ${port}..`);
-})})
+})
