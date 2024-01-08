@@ -1,6 +1,25 @@
 const express = require('express');
-const app = express();
 const sqlconn = require('mysql2');
+const cors = require('cors');
+const cookieSession = require('cookie-session');
+
+const app = express();
+
+app.use(cors());
+
+// Parse request body of application/json content type
+app.use(express.json());
+
+// Parse request body of application/x-www-form-urlencoded
+app.use(express.urlencoded({extended: true }));
+
+app.use(
+    cookieSession({
+        name: 'virtualify-session',
+        key: 'secret-key',
+        httpOnly: true
+    })
+);
 
 const port = 3060;
 
