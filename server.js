@@ -16,12 +16,11 @@ app.use(express.urlencoded({extended: true }));
 app.use(
     cookieSession({
         name: 'virtualify-session',
-        key: 'secret-key',
+        key: ['key1'],
+        secret: 'dgh455^%fh',
         httpOnly: true
     })
 );
-
-const port = 3060;
 
 // Connecting to MySQL database
 const connection = sqlconn.createConnection({
@@ -37,6 +36,7 @@ connection.connect((err) => {
     console.log("Database connection successful");
 });
 
+const port = 3060;
 
 //Router for user registering an account with middleware
 app.post('/register', (req, res) => {
