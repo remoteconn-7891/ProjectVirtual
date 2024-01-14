@@ -1,11 +1,20 @@
 const express = require('express');
-const sqlconn = require('mysql2');
-const cors = require('cors');
-const cookieSession = require('cookie-session');
+const mysql = require('mysql2');
 
 const app = express();
 
-app.use(cors());
+function initial () {
+    Role.create({
+       id: 1,
+       name: 'Job seeker' 
+    });
+
+    Role.create({
+        id: 1,
+        name: 'Company' 
+     });  
+
+}
 
 // Parse request body of application/json content type
 app.use(express.json());
@@ -13,22 +22,13 @@ app.use(express.json());
 // Parse request body of application/x-www-form-urlencoded
 app.use(express.urlencoded({extended: true }));
 
-app.use(
-    cookieSession({
-        name: 'virtualify-session',
-        key: ['key1'],
-        secret: 'dgh455^%fh',
-        httpOnly: true
-    })
-);
-
 // Connecting to MySQL database
-const connection = sqlconn.createConnection({
+const connection = mysql.createConnection({
 
     host: '127.0.0.1',
     user: 'root',
-    password: 'VirtualDB@87',
-    database: 'virtual_db',
+    password: 'Virtualdb@87',
+    database: 'sys',
 });
 
 connection.connect((err) => {
@@ -37,30 +37,6 @@ connection.connect((err) => {
 });
 
 const port = 3060;
-
-//Router for user registering an account with middleware
-app.post('/register', (req, res) => {
-    const {email, password, passwordConfirmation} = req.body
-
-    // Minimum password length of 8 characters   
-    if(password === minimumPassword) {
-        const minimumPassword = 8,
-password = true
-    }
-    // Verify if password matches confirm password on the register form
-    if (password === passwordConfirmation) {
-
-        // Verify if email doesn't match an existing user account
-if (user.find(user => user.email === email)) {
-    }
-    res.status(200).send('Successfully created an account', {
-        message: 'User with this email already exists'
-    });
-    return ;
-    }
-
-    const hashedPassword = getHashedPassword(password);
-});
 
 // Router (API) for login in Express.js using HTTP Req & Res (POST)
 app.post('/login', (req, res) => {
