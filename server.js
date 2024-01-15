@@ -1,5 +1,6 @@
 const express = require('express');
 const mysql = require('mysql2');
+const bcrypt = require('bcrypt');
 
 const app = express();
 
@@ -16,11 +17,12 @@ function initial () {
 
 }
 
-// Parse request body of application/json content type
-app.use(express.json());
-
-// Parse request body of application/x-www-form-urlencoded
-app.use(express.urlencoded({extended: true }));
+require('dotenv').config()
+const db_host = process.env.db_host
+const db_user = process.env.db_user
+const db_email = process.env.db_email
+const db_password = process.env.db_password
+const db_dbname = process.env.db_dbname
 
 // Connecting to MySQL database
 const connection = mysql.createConnection({
@@ -28,15 +30,54 @@ const connection = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
     password: 'Virtualdb@87',
-    database: 'sys',
+    database: 'userLogin',
 });
 
-connection.connect((err) => {
-    if (err) throw err;
+connection.connect((err, connection) => {
+    if (err) throw (err);
     console.log("Database connection successful");
 });
 
 const port = 3060;
+
+// Route & middleware for registering users using HTTP POST method 
+app.post('/register', async (req, res) => {
+    const user = req.body.email;
+    const hashedPassword = await bcrypt.hash(req.body.password,8);
+
+    connection.connect( async (err, connection) => {
+        if (err) throw (err);
+
+        const sqlSearch = 'SELECT * FROM loginDB WHERE user = ?'
+        const search_query = mysql.format(sqlSearch,[user]);
+
+        const sqlInsert = 'INSERT INTO loginDB VALUES (0,?,?)'
+        const insert_query = mysql.format(sqlInsert,[user, hashedPassword]);
+
+        await connection.query (search_query, async (err, result) => {
+
+            if (err) throw (err)
+            console.log('------> Search results')
+            console.log(result.length)
+
+            if (result.lengh != 0) {
+                connection.release()
+                console.log('------> User with email/password already exists')
+                res.sendStatus(409)
+            }
+            else {
+                await connection.query (insert_query, (err, result) => {
+                    connection.release()
+
+                    if (err) throw (err)
+                    console.log ('------> Registered new user');
+                    console.log(result.insertId);
+                    res.sendStatus(201)
+                })
+            }
+        })
+    })
+})
 
 // Router (API) for login in Express.js using HTTP Req & Res (POST)
 app.post('/login', (req, res) => {
