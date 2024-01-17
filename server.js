@@ -1,8 +1,12 @@
 const express = require('express');
 const mysql = require('mysql2');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
+const bodyParser = require('body-parser');
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 function initial () {
     Role.create({
@@ -42,12 +46,12 @@ const port = 3060;
 
 // Route & middleware for registering users using HTTP POST method 
 app.post('/register', async (req, res) => {
-    const user = req.body.email;
-    const hashedPassword = await bcrypt.hash(req.body.password,8);
+    console.log(req.body.password)
 
     connection.connect( async (err, connection) => {
-        if (err) throw (err);
-
+        if (err) {
+        console.log(err.message)
+        res.status(401).json({message: "Error occurred"})}
         const sqlSearch = 'SELECT * FROM loginDB WHERE user = ?'
         const search_query = mysql.format(sqlSearch,[user]);
 
