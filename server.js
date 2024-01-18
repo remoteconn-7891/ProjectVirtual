@@ -8,26 +8,6 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-function initial () {
-    Role.create({
-       id: 1,
-       name: 'Job seeker' 
-    });
-
-    Role.create({
-        id: 1,
-        name: 'Company' 
-     });  
-
-}
-
-require('dotenv').config()
-const db_host = process.env.db_host
-const db_user = process.env.db_user
-const db_email = process.env.db_email
-const db_password = process.env.db_password
-const db_dbname = process.env.db_dbname
-
 // Connecting to MySQL database
 const connection = mysql.createConnection({
 
@@ -46,66 +26,60 @@ const port = 3060;
 
 // Route & middleware for registering users using HTTP POST method 
 app.post('/register', async (req, res) => {
-    console.log(req.body.password)
 
-    connection.connect( async (err, connection) => {
-        if (err) {
-        console.log(err.message)
-        res.status(401).json({message: "Error occurred"})}
-        const sqlSearch = 'SELECT * FROM loginDB WHERE user = ?'
-        const search_query = mysql.format(sqlSearch,[user]);
+    const user = req.body.email;
+    const hashPassword = await bcryptjs.hash(req.body.password, 8);
 
-        const sqlInsert = 'INSERT INTO loginDB VALUES (0,?,?)'
-        const insert_query = mysql.format(sqlInsert,[user, hashedPassword]);
+    decodeBase64.getConnection( async, (err, connection) => {
+        if (err) throw (err)
 
-        await connection.query (search_query, async (err, result) => {
+        const sqlSearch = "SELECT * FROM loginDB WHERE user = ?"
+        const search_query = mysql.format(sqlSearch,[user])
 
+        const sqlInsert = "INSERT INTO loginDB VALUES (0,?,?)"
+        const insert_query = mysql.format(sqlInsert,[user, hashPassword])
+
+         connection.query (search_query, async (err, result) => {
             if (err) throw (err)
-            console.log('------> Search results')
+            console.log("------> Search Results")
             console.log(result.length)
-
-            if (result.lengh != 0) {
-                connection.release()
-                console.log('------> User with email/password already exists')
-                res.sendStatus(409)
-            }
+            if (result.length != 0) {
+             connection.release()
+             console.log("------> User already exists")
+             res.sendStatus(409) 
+            } 
             else {
-                await connection.query (insert_query, (err, result) => {
-                    connection.release()
-
-                    if (err) throw (err)
-                    console.log ('------> Registered new user');
-                    console.log(result.insertId);
-                    res.sendStatus(201)
-                })
-            }
-        })
-    })
-})
-
+             await connection.query (insert_query, (err, result)=> {
+             connection.release()
+             if (err) throw (err)
+             console.log ("--------> Created new User")
+             console.log(result.insertId)
+             res.sendStatus(201)
+            })
+           }
+          }) //end of connection.query()
+          }) //end of db.getConnection()
+          }) //end of app.post()
+    
 // Router (API) for login in Express.js using HTTP Req & Res (POST)
 app.post('/login', (req, res) => {
-
-    const email = 'example@email.com'
-    const password = 'Password123!'
-    
-    if(!email) res.status(401).send('Invalid email')
-    if(!password) res.status(401).send('Invalid password')
-    res.status(200).send('Successful login')
+const {email, password} = req.body;
+const query = `SELECT * FROM loginDB WHERE email = '${email}' AND password = '${password}'`
+connection.query(query, (err, results) => {
+    if (err) throw err;
+    if (results.length > 0) {
+        res.redirect('/home');
+    } else {
+        res.send('Invalid email/password');
+    }
+});
 });
 
-// Route for navigating to the profile pages
-app.get('/profile', (req, res) => {
-    res.status(200).send('Create a profile')
-});
-
-// Router for logging out user
-app.post('/logout', (req, res) => {
-    res.status(200).send('Successfully logged out')
-    
+app.get('/home', (req, res) => {
+    res.send('Successful login');
 });
 
 // server is listening on port 3060
 app.listen(port, () => {
     console.log(`Listening on port ${port}..`);
-})
+});
