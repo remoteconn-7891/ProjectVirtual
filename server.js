@@ -63,16 +63,8 @@ app.post('/register', async (req, res) => {
     
 // Router (API) for login in Express.js using HTTP Req & Res (POST)
 app.post('/login', (req, res) => {
-const {email, password} = req.body;
-const query = `SELECT * FROM loginDB WHERE email = '${email}' AND password = '${password}'`
-connection.query(query, (err, results) => {
-    if (err) throw err;
-    if (results.length > 0) {
-        res.redirect('/home');
-    } else {
-        res.send('Invalid email/password');
-    }
-});
+
+
 });
 
 app.get('/home', (req, res) => {
