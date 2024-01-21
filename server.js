@@ -27,6 +27,21 @@ connection.connect((err, connection) => {
 
 const port = 3060;
 
+//Route for Home page
+app.get('/Home', (req, res) => {
+try {
+  res.status(200).json({
+    status: "success",
+    message: "Welcome to Virtualify",
+  });
+} catch (err) {
+  res.status(500).json({
+    status: "error",
+    message: "Server error",
+  });
+}
+});
+
 // Route & middleware for registering users using HTTP POST method 
 app.post('/register', (req, res) => {
 const {email} = req.body
@@ -85,8 +100,15 @@ app.post('/login', (req, res) => {
   });
 
   app.post('/logout', (req, res) => {
-    if (err) throw err;
-    console.log('Successfully logged out');
+try {
+  res.status(200).json({message: "Successfully logged out"});
+} catch (err) {
+  res.status(500).json({
+    status: "error",
+    message: "internal Server",
+  });
+}
+    
   });
 // server is listening on port 3060
 app.listen(port, () => {
