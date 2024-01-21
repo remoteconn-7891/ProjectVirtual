@@ -28,37 +28,44 @@ connection.connect((err, connection) => {
 const port = 3060;
 
 // Route & middleware for registering users using HTTP POST method 
-app.post('/register', async (req, res) => {
-const {email, password, confirm_password} = req.body
+app.post('/register', (req, res) => {
+const {email} = req.body
+emailRegex = function(email) {
+  const exp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (email.match(exp)) {
+    return true;
+  } else {
+    return false;
+    if (!email) {
+      res.status(400).json({ error: "Email required! "});
+  }
+  
+  if (email) {
+  return res.status(201).json({ message: "Valid email!" })
+  } else {
+  return res.status(400).json({error: "Invalid email" });
+  }
+  }
+};
 
-if (!email) {
-    res.status(400).json({ error: "Email required! "});
-}
+const password = "password123!";
 
-if (password) {
-return res.json({ message: "Valid email!" })
-} else {
-return res.status(400).json({error: "Invalid email" });
-}
+bcryptjs.hash(password, 8, (err, hashedPassword) => {
+  if (err) {
+    return err;
+  }
 
-const schema = passwordValidator();
+  console.log(hashedPassword);
 
-schema
-.is().string()
-.is().min(8)
-.is().max(20)
-.has().lowercase(a-z)
-.has().uppercase(A-Z)
-.has().specialcharacter('!@#%&*')
+  bcryptjs.compare(password, hashedPassword, (err, isMatch) => {
+    if (err) {
+      return err;
+    }
 
-const passwordError = {
-min: "Password should contain a minimum of 8 characters",
-max: "Password should contain a maximum of 24 characters",
-uppercase: "Password should contain at least 1 uppercase letter",
-lowercase: "Password should contain at least 1 lowercase letter",
-number: "Password should contain at least 1 number"
-}
-const query = `INSERT INTO loginDB ( email, password, confirm_password) VALUES (' '${email}', '${password}', '${confirm_password})`;
+    console.log(isMatch);
+  })
+})
+const query = `INSERT INTO loginDB ( email, password) VALUES (' '${email}', '${password}`;
 connection.query(query, (err, results) => {
   if (err) throw err;
   console.log('Successfully registered account')
