@@ -1,5 +1,10 @@
+const bcryptjs = require('bcryptjs')
+const express = require('express')
+const router = express.Router()
+
+
 // Router (API) for login in Express.js using HTTP Req & Res (POST)
-app.post('/login', (req, res) => {
+router.post('/login', (req, res) => {
 const { email, password } = req.body
 if (!email || !password) {
     return res.status(400).json({message: "Invalid email/passowrd",})
@@ -26,3 +31,5 @@ try {
         error: error.message,
     })
 }
+
+module.exports = router

@@ -2,9 +2,11 @@ const express = require('express');
 const mysql = require('mysql2');
 const bcryptjs = require('bcryptjs');
 const bodyParser = require('body-parser');
-const passwordValidator = require('password-validator');
+const register = require('./authorization/auth_user_registration.js');
 
 const app = express();
+
+app.use('/register', register);
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -23,6 +25,21 @@ connection.connect((err, connection) => {
     console.log("Database connection successful");
 });
 
+const router = express.Router()
+
+// middleware that is specific to this router
+router.use((req, res, next) => {
+  console.log('Time: ', Date.now())
+  next()
+})
+// define the home page route
+router.get('/register', (req, res) => {
+  res.send('Registered user')
+})
+// define the about route
+router.get('/login', (req, res) => {
+  res.send('Logged in')
+})
 
 const port = 3060;
 
@@ -63,3 +80,5 @@ try {
 app.listen(port, () => {
     console.log(`Listening on port ${port}..`);
 });
+
+module.exports = router
