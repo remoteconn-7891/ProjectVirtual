@@ -52,6 +52,7 @@ try {
 }
     
   });
+// Route for setting up profile pages, one for job seeker and the other for the company
 
   app.get('/profile', (req, res) => {
 

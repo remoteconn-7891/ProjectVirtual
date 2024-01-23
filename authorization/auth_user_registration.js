@@ -7,11 +7,16 @@ const { email, password } = req.body;
       if(!isValid(password)) return res.status(400).json({error:"invalid password"})
       return res.status(200).json({message:"Successfully created an account"})
 
-    const saltRounds = 10;
-bcrypt.hash(password, saltRounds, (err, hash) =>{
-// Hash gets stored in DB here
-});
-
+    function isEmail(email) {
+        const emailFormat = /^[a-zA-Z0-9_.+]+(?<!^[0-9]*)@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+        if (emaial !== '' && email.match(emailFormat)) { return true; }
+  
+        return false;
+        const saltRounds = 10;
+    bcrypt.hash(password, saltRounds, (err, hash) =>{
+    // Hash gets stored in DB here
+    });
+    
 bcrypt.compare(password, hash, (err, result) => {
 
 });
@@ -25,4 +30,4 @@ bcrypt.compare(password3, hash, (err, result) => {
         console.log("Password does not match!")
     }
 });
-    });
+    }})
