@@ -17,7 +17,7 @@ try {
     if (!user) {
         res.status(400).json({
             message: "Login unsuccessful",
-            error: "User with this email/password does not exist",
+            error: "User with email/password does not exist",
         })
     } else {
         res.status(200).json({

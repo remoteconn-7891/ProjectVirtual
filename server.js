@@ -11,20 +11,6 @@ app.use('/register', register);
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-// Connecting to MySQL database
-const connection = mysql.createConnection({
-
-    host: '127.0.0.1',
-    user: 'root',
-    password: 'Virtualdb@87',
-    database: 'userLogin',
-});
-
-connection.connect((err, connection) => {
-    if (err) throw (err);
-    console.log("Database connection successful");
-});
-
 const router = express.Router()
 
 // middleware that is specific to this router
