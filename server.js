@@ -2,11 +2,10 @@ const express = require('express');
 const mysql = require('mysql2');
 const bcryptjs = require('bcryptjs');
 const bodyParser = require('body-parser');
-const register = require('./authorization/auth_user_registration.js');
+const register = require('./auth_routes/auth_user_registration.js');
 
 const app = express();
 
-app.use('/register', register);
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -18,13 +17,19 @@ router.use((req, res, next) => {
   console.log('Time: ', Date.now())
   next()
 })
-// define the home page route
+// define the register page route
 router.get('/register', (req, res) => {
   res.send('Registered user')
 })
-// define the about route
+// define the login page route
 router.get('/login', (req, res) => {
   res.send('Logged in')
+})
+
+// Define the logout page route
+router.get('/logout', (req, res) => {
+  request.session.destroy()
+  res.redirect('/home')
 })
 
 const port = 3060;
@@ -44,17 +49,6 @@ try {
 }
 });
 
-app.post('/logout', (req, res) => {
-try {
-  res.status(200).json({message: "Successfully logged out"});
-} catch (err) {
-  res.status(500).json({
-    status: "error",
-    message: "internal Server",
-  });
-}
-    
-  });
 // Route for setting up profile pages, one for job seeker and the other for the company
 
   app.get('/profile', (req, res) => {
@@ -66,5 +60,3 @@ try {
 app.listen(port, () => {
     console.log(`Listening on port ${port}..`);
 });
-
-module.exports = router
