@@ -10,6 +10,7 @@ const hashedPassword = await bcrypt.hash(password, salt);
       if(!isValid(email)) return res.status(400).json({error:"invalid email"})
       if(!isValid(password)) return res.status(400).json({error:"invalid password"})
       return res.status(200).json({message:"Successfully created an account"})
+        res.redirect('/profile');
 
     if (password.length < 8) {
         return res.status(400).json({

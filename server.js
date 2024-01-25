@@ -7,7 +7,6 @@ const login = require('./routers/auth_user_login.js');
 
 const app = express();
 
-
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
@@ -42,7 +41,6 @@ try {
     message: "Server error",
   });
 }
-
 
 app.post('/logout', (req, res) => {
   try {
