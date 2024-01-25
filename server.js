@@ -3,6 +3,7 @@ const mysql = require('mysql2');
 const bcryptjs = require('bcryptjs');
 const bodyParser = require('body-parser');
 const register = require('./auth_routes/auth_user_registration.js');
+const login = require('./auth_routes/auth_user_login.js');
 
 const app = express();
 
