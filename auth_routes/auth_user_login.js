@@ -28,8 +28,16 @@ if (!email || !password) {
             message: "Error",
             error: error.message,
         })
-    }})
+    }
+const storedHashPassword = user.password;
+const validPassword = await bcryptjs.compare(password, storedHashPassword);
 
-
+if (validPassword) {
+    res.status(200).json({message: "Valid password"});
+}else {
+    res.status(400).json({message: "Invalid password"});
+}
+}
+    )
 
 module.exports = router
