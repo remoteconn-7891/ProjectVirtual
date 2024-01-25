@@ -19,9 +19,9 @@ if (!email || !password) {
             })
         } else {
             res.status(200).json({
-                message: "Successfully logged in",
-                user,
+                message: "Successfully logged in",       
             })
+            res.redirect('/profile')
         }
     } catch (error) {
         res.status(400).json({
