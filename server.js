@@ -43,19 +43,21 @@ try {
 }
 
 app.post('/logout', (req, res) => {
-  try {
-    res.status(200).json({message: "Successfully logged out"});
-  } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "internal Server",
+  if (req.session) {
+    req.session.destroy(err => {
+      if (err) {
+        res.status(400).send('Logout unsuccessful')
+      } else {
+        res.status(200).send('Successfully logged out')
+      }
     });
-    
-    request.session.destroy()
-    res.redirect('/home')
+  } else {
+    res.end()
   }
-})
-});
+    res.redirect('/home')
+  },
+  )},
+)
 
 // Route for setting up profile pages, one for job seeker and the other for the company
 
