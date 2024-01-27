@@ -14,7 +14,7 @@ const router = express.Router()
 
 // middleware that is specific to this router
 router.use((req, res, next) => {
-  console.log('Time: ', Date.now())
+  console.log('Time:', Date.now())
   next()
 })
 // define the register page route
@@ -24,6 +24,11 @@ router.get('/register', (req, res) => {
 // define the login page route
 router.get('/login', (req, res) => {
   res.send('Logged in')
+})
+
+// define the logout page route
+router.get('/logout', (req, res) => {
+  res.send('Successfully logged out')
 })
 
 const port = 3060;
@@ -42,21 +47,11 @@ try {
   });
 }
 
-app.post('/logout', (req, res) => {
-  if (req.session) {
-    req.session.destroy(err => {
-      if (err) {
-        res.status(400).send('Logout unsuccessful')
-      } else {
-        res.status(200).send('Successfully logged out')
-      }
-    });
-  } else {
-    res.end()
-  }
+
+    
+    request.session.destroy()
     res.redirect('/home')
-  },
-  )},
+  }
 )
 
 // Route for setting up profile pages, one for job seeker and the other for the company
