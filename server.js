@@ -4,6 +4,7 @@ const bcryptjs = require('bcryptjs');
 const bodyParser = require('body-parser');
 const register = require('./routers/auth_user_registration.js');
 const login = require('./routers/auth_user_login.js');
+const AccessControl = require('accesscontrol');
 
 const app = express();
 
