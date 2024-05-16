@@ -5,7 +5,7 @@
 
 <p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=remoteconn-7891" alt="remoteconn-7891" /></a> </p>
 
-- 🔭 I’m currently working on **Remotify**
+- 🔭 I’m currently working on **Remotify, a business to business networking platform designed for remote jobs**
 
 - 🌱 I’m currently learning **Python, Ruby, Version Control, Node.js, MySQL**
 
