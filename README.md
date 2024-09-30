@@ -1,5 +1,5 @@
 <h1 align="center">Hi 👋, I'm Corey James</h1>
-<h3 align="center">A beginner backend developer that's looking to improve his skills</h3>
+<h3 align="center">A junior backend developer that's looking to improve his skills and collaborate</h3>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=remoteconn-7891&label=Profile%20views&color=0e75b6&style=flat" alt="remoteconn-7891" /> </p>
 
